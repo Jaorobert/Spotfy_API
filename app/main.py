@@ -1,9 +1,30 @@
-from spotify import buscar_artista
+from fastapi import FastAPI
+from app.spotify import buscar_artista_resumo
+from app.models import ArtistaResponse
 
 
-artista = buscar_artista(
-    "4PdFQIzACemw18MfVS1LCF"
+app = FastAPI(
+    title="Spotify API",
+    description="API para consulta de artistas usando Spotify Web API",
+    version="1.0"
 )
 
 
-print(artista)
+@app.get("/")
+def inicio():
+
+    return {
+        "mensagem": "API Spotify funcionando"
+    }
+
+
+
+@app.get(
+    "/artista/{nome}",
+    response_model=ArtistaResponse
+)
+def buscar_artista(nome: str):
+
+    resultado = buscar_artista_resumo(nome)
+
+    return resultado
