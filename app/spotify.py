@@ -53,7 +53,6 @@ def buscar_por_nome(nome_artista):
     return response.json()
 
 
-
 def buscar_artista_resumo(nome_artista):
 
     resultado = buscar_por_nome(nome_artista)
@@ -68,11 +67,9 @@ def buscar_artista_resumo(nome_artista):
     artista = artistas[0]
 
     return {
-        "nome": artista.get("name"),
-        "id": artista.get("id"),
-        "spotify_url": artista.get("external_urls", {}).get("spotify"),
-        "imagem": artista["images"][0]["url"] if artista.get("images") else None,
-        "popularidade": artista.get("popularity", 0),
-        "seguidores": artista.get("followers", {}).get("total", 0),
-        "generos": artista.get("genres", [])
+        "nome": artista["name"],
+        "id": artista["id"],
+        "spotify_url": artista["external_urls"]["spotify"],
+        "imagem": artista["images"][0]["url"] if artista.get("images") else None
+    
     }

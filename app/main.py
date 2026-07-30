@@ -4,8 +4,15 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.models import ArtistaResponse
+from app.schemas import ArtistaResponse
 from app.pipelines import pipeline_artista
+
+
+from app.database import engine, Base
+from app import models
+
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Spotify API",

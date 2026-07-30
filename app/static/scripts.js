@@ -28,12 +28,6 @@ window.buscar = async function () {
 
                 <p><strong>ID:</strong> ${artista.id}</p>
 
-                <p><strong>Seguidores:</strong> ${artista.seguidores.toLocaleString()}</p>
-
-                <p><strong>Popularidade:</strong> ${artista.popularidade}</p>
-
-                <p><strong>Gêneros:</strong> ${artista.generos.join(", ")}</p>
-
                 <a href="${artista.spotify_url}" target="_blank">
                     Abrir no Spotify
                 </a>
