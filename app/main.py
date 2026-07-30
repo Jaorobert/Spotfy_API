@@ -1,7 +1,11 @@
-from fastapi import FastAPI
-from app.spotify import buscar_artista_resumo
-from app.models import ArtistaResponse
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
+from app.models import ArtistaResponse
+from app.pipelines import pipeline_artista
 
 app = FastAPI(
     title="Spotify API",
@@ -9,22 +13,27 @@ app = FastAPI(
     version="1.0"
 )
 
-
-@app.get("/")
-def inicio():
-
-    return {
-        "mensagem": "API Spotify funcionando"
-    }
-
-
-
-@app.get(
-    "/artista/{nome}",
-    response_model=ArtistaResponse
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+templates = Jinja2Templates(directory="app/templates")
+
+
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html"
+    )
+
+
+@app.get("/artista/{nome}", response_model=ArtistaResponse)
 def buscar_artista(nome: str):
-
-    resultado = buscar_artista_resumo(nome)
-
-    return resultado
+    return pipeline_artista(nome)

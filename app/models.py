@@ -6,3 +6,6 @@ class ArtistaResponse(BaseModel):
     id: str
     spotify_url: str
     imagem: str | None = None
+    popularidade: int
+    seguidores: int
+    generos: list[str]
